@@ -6,82 +6,84 @@ import (
 	"sort"
 )
 
-func main() {
-	randomMin := 1
-	randomMax := 500
-	max := 100
+func min(kelompok ...int) int {
+	minimum := kelompok[0]
+	for _, value := range kelompok { //mencari minimum
+		if value < minimum {
+			minimum = value
+		}
+	}
+	return minimum
+}
 
-	arrNumber := []int{}
+func max(kelompok ...int) int {
+	maximum := kelompok[0]
+	for _, value := range kelompok {
+		if value > maximum {
+			maximum = value
+		}
+	}
+	return maximum
+}
+
+func sum(kelompok ...int) int {
+	total := 0
+	for i := 0; i < len(kelompok); i++ { //mencari total kelompok 1
+		total += kelompok[i]
+	}
+	return total
+}
+
+func average(total int, kelompok ...int) float32 {
+	return float32(total) / float32(len(kelompok))
+}
+
+func report(typeKelompok int, kelompok ...int) {
+	total := sum(kelompok...)
+	rata := average(total, kelompok...)
+	min := min(kelompok...)
+	max := max(kelompok...)
+
+	fmt.Println("---------------------")
+	fmt.Println("Kelompok", typeKelompok)
+	fmt.Println("---------------------")
+
+	fmt.Println("total\t:", total)
+	fmt.Println("rata\t:", rata)
+	fmt.Println("min\t:", min)
+	fmt.Println("max\t:", max)
+	sort.Ints(kelompok)
+	fmt.Println("urut\t:", kelompok)
+	fmt.Println()
+	fmt.Println("---------------------")
+}
+
+func sliceKelompok(arr ...int) (kelompok1, kelompok2, kelompok3 []int) {
+	fmt.Println(len(arr))
+	for i, v := range arr {
+		if i%3 == 0 {
+			kelompok1 = append(kelompok1, v)
+		} else if i%3 == 1 {
+			kelompok2 = append(kelompok2, v)
+		} else if i%3 == 2 {
+			kelompok3 = append(kelompok3, v)
+		}
+	}
+	return
+}
+
+func inisialisasiKelompok(min int, max int, maxNilai int) (nilai []int) {
 	for i := 1; i <= max; i++ {
-		arrNumber = append(arrNumber, rand.Intn(randomMax-randomMin+1)+randomMin)
+		nilai = append(nilai, rand.Intn(maxNilai-min)+min)
 	}
-
-	slice1 := arrNumber[:33]
-	slice2 := arrNumber[33:66]
-	slice3 := arrNumber[66:]
-
-	fmt.Println("100 angka random dari 1-500 : ")
-	fmt.Println(arrNumber)
-	fmt.Println("Panjang : ", len(arrNumber))
-
-	fmt.Println()
-	fmt.Println("slice1\t\t: ", slice1)
-	fmt.Println("Panjang\t\t: ", len(slice1))
-	fmt.Println("Min\t\t: ", findMin(slice1))
-	fmt.Println("Max\t\t: ", findMax(slice1))
-	fmt.Println("Total\t\t: ", sum(slice1))
-	rata1 := sum(slice1) / len(slice1)
-	fmt.Println("Rata-rata\t: ", rata1)
-	sort.Ints(slice1)
-	fmt.Println("urut\t\t: ", slice1)
-
-	fmt.Println()
-	fmt.Println("slice2\t\t: ", slice2)
-	fmt.Println("Panjang\t\t: ", len(slice2))
-	fmt.Println("Min\t\t: ", findMin(slice2))
-	fmt.Println("Max\t\t: ", findMax(slice2))
-	fmt.Println("Total\t\t: ", sum(slice2))
-	rata2 := sum(slice2) / len(slice2)
-	fmt.Println("Rata-rata\t: ", rata2)
-	sort.Ints(slice2)
-	fmt.Println("urut\t\t: ", slice2)
-
-	fmt.Println()
-	fmt.Println("slice3\t\t: ", slice3)
-	fmt.Println("Panjang\t\t: ", len(slice3))
-	fmt.Println("Min\t\t: ", findMin(slice3))
-	fmt.Println("Max\t\t: ", findMax(slice3))
-	fmt.Println("Total\t\t: ", sum(slice3))
-	rata3 := sum(slice3) / len(slice3)
-	fmt.Println("Rata-rata\t: ", rata3)
-	sort.Ints(slice3)
-	fmt.Println("urut\t\t: ", slice3)
+	fmt.Println(nilai)
+	return
 }
 
-func findMin(arr []int) int {
-	min := arr[0]
-	for i := 0; i < len(arr); i++ {
-		if arr[i] < min {
-			min = arr[i]
-		}
-	}
-	return min
-}
-
-func findMax(arr []int) int {
-	max := 0
-	for i := 0; i < len(arr); i++ {
-		if arr[i] > max {
-			max = arr[i]
-		}
-	}
-	return max
-}
-
-func sum(arr []int) int {
-	sum := 0
-	for i := 0; i < len(arr); i++ {
-		sum += arr[i]
-	}
-	return sum
+func main() {
+	arr := inisialisasiKelompok(20, 100, 100)
+	kelompok1, kelompok2, kelompok3 := sliceKelompok(arr...)
+	report(1, kelompok1...)
+	report(2, kelompok2...)
+	report(3, kelompok3...)
 }
